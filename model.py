@@ -1,45 +1,60 @@
 import json
+import os.path
 import uuid
 from datetime import datetime
 
 
 class Note:
 
-    def __init__(self, title: str, content: str):
-        self._id = str(uuid.uuid4())
-        self._title = title
-        self._content = content
-        self._time_stamp = datetime.now()
+    def __init__(self, note_id, title, content, time_stamp):
+        self.note_id = note_id
+        self.title = title
+        self.content = content
+        self.time_stamp = time_stamp
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'title': self._title,
-            'content': self._content,
-            'time_stamp': self._time_stamp.strftime('%Y-%m-%d %H:%M:%S')
+            'id': self.note_id,
+            'title': self.title,
+            'content': self.content,
+            'time_stamp': self.time_stamp
         }
 
-    def update(self, title=None, content=None):
-        self._title = title if title is not None else self._title
-        self._content = content if content is not None else self._content
-        self._time_stamp = datetime.now()
+
+def get_next_id():
+    if not os.path.exists('notes.json'):
+        return 0
+    with open('notes.json', 'r') as f:
+        data = f.read().strip()
+        if not data:
+            return 0
+        data = json.loads(data)
+        notes = data.get('notes', [])
+        if notes:
+            last_note_id = notes[-1]['id']
+            return int(last_note_id) + 1
+        else:
+            return 0
 
 
-def save_note(note):
-    with open('note_pad.json', 'r') as f:
-        data = json.load(f)
-
-    data['notes'].append(note.to_dict())
-
-    with open('note_pad.json', 'w') as f:
+def write_notes(notes):
+    data = {'notes': [note.to_dict() for note in notes]}
+    with open('notes.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 
-def load_note():
-    with open('note_pad.json', 'r') as f:
-        data = json.load(f)
+def read_notes():
+    if not os.path.exists('notes.json'):
+        return []
+    with open('notes.json', 'r') as f:
+        data = f.read().strip()
+        if not data:
+            return []
+        data = json.loads(data)
 
     notes = []
     for note_data in data['notes']:
         time_stamp = datetime.strftime(note_data['time_stamp'], '%Y-%m-%d %H:%M:%S')
-        notes.append(Note(note_data['id']))
+        notes.append(Note(int(note_data['id']), note_data['title'], note_data['content'], time_stamp))
+
+    return notes
