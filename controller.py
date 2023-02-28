@@ -28,6 +28,7 @@ class NoteController:
         display_filtered_notes(self.notes, filter_date)
 
     def show_specific_note_command(self):
+        self.notes = read_notes()
         note_id = get_note_id()
         note_index = self.find_note_index_by_id(note_id)
         if note_index is None:
