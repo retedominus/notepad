@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 
 
@@ -14,9 +13,15 @@ def display_notes(notes):
         return
     print("\nСписок заметок: ")
     for note in notes:
-        print(f"ID заметки: {note.note_id}\n{note.title} (Создана (изменена): "
-              f"{note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')})\n{note.content}")
+        print(f"ID заметки: {note.note_id}\nЗаголовок: {note.title}\nСодержание: {note.content}\n(Добавлена/изменена): "
+              f"{note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')}\n")
     print()
+
+
+def display_specific_note(note):
+    print()
+    print(f"ID заметки: {note.note_id}\nЗаголовок: {note.title}\nСодержание: {note.content}\n(Добавлена/изменена): "
+          f"{note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')}\n")
 
 
 def get_filter_date():
@@ -24,7 +29,7 @@ def get_filter_date():
     try:
         filter_date = datetime.strptime(filter_date_str, "%d.%m.%Y")
     except ValueError:
-        print("Некорректный формат даты. Попробуйте снова.")
+        print("\nНекорректный формат даты. Попробуйте снова.\n")
         return get_filter_date()
     else:
         return filter_date
@@ -33,11 +38,11 @@ def get_filter_date():
 def display_filtered_notes(notes, filter_date):
     filtered_notes = [note for note in notes if note.time_stamp.date() == filter_date.date()]
     if not filtered_notes:
-        print(f"Заметок за {filter_date.strftime('%d.%m.%Y')} не найдено.")
+        print(f"Заметок за {filter_date.strftime('%d.%m.%Y')} не найдено.\n")
     else:
         print(f"Список заметок за {filter_date.strftime('%d.%m.%Y')}:")
         for note in filtered_notes:
-            print(f"{note.title} ({note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')})")
+            print(f"ID: {note.note_id} Заголовок: {note.title} ({note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')})")
     print()
 
 
@@ -46,7 +51,7 @@ def get_note_id():
     try:
         note_id = int(note_id_str)
     except ValueError:
-        print("Некорректный формат ID. Попробуйте снова.")
+        print("Некорректный формат ID. Попробуйте снова.\n")
         return get_note_id()
     else:
         return note_id
@@ -56,4 +61,3 @@ def get_note_update_data():
     title = input("Введите новый заголовок (оставьте пустым, чтобы не изменять): ")
     content = input("Введите новое содержание заметки (оставьте пустым, чтобы не изменять): ")
     return title, content
-

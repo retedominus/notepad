@@ -35,8 +35,6 @@ def get_next_id():
                 note_ids.add(note['id'])
             next_id = max(note_ids) + 1
             return next_id
-            # last_note_id = notes[-1]['id']
-            # return int(last_note_id) + 1
         else:
             return 0
 

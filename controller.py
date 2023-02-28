@@ -1,9 +1,8 @@
-import uuid
 from datetime import datetime
 
 from model import read_notes, Note, write_notes, get_next_id
 from view import get_note_data, display_notes, get_filter_date, display_filtered_notes, get_note_id, \
-    get_note_update_data
+    get_note_update_data, display_specific_note
 
 
 class NoteController:
@@ -27,6 +26,14 @@ class NoteController:
     def filter_notes_by_date_command(self):
         filter_date = get_filter_date()
         display_filtered_notes(self.notes, filter_date)
+
+    def show_specific_note_command(self):
+        note_id = get_note_id()
+        note_index = self.find_note_index_by_id(note_id)
+        if note_index is None:
+            print("Заметка не найдена.")
+            return
+        display_specific_note(self.notes[note_index])
 
     def update_note_command(self):
         note_id = get_note_id()
@@ -74,6 +81,3 @@ class NoteController:
                 return False
             else:
                 print("Неверный ввод. Попробуйте еще раз.")
-
-
-
