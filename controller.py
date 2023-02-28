@@ -63,7 +63,6 @@ class NoteController:
 
     def save_notes_command(self):
         write_notes(self.notes)
-        # print("Заметки сохранены в файл.")
 
     def find_note_index_by_id(self, note_id):
         for i, note in enumerate(self.notes):
