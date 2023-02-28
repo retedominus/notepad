@@ -4,14 +4,13 @@ from controller import NoteController
 def main():
     controller = NoteController()
     while True:
-        print("Меню: ")
-        print("1. Добавить заметку")
-        print("2. Вывести список заметок")
-        print("3. Фильтровать заметки по дате")
-        print("4. Редактировать заметку")
-        print("5. Удалить заметку")
-        print("6. Сохранить заметки в файл")
-        print("7. Выход")
+        print("Меню:\n"
+              "1. Добавить заметку\n"
+              "2. Вывести список заметок\n"
+              "3. Фильтровать заметки по дате\n"
+              "4. Редактировать заметку\n"
+              "5. Удалить заметку\n"
+              "6. Выход")
         choice = input("Выберите пункт меню: ")
         if choice == "1":
             controller.add_note_command()
@@ -24,8 +23,6 @@ def main():
         elif choice == "5":
             controller.delete_note_command()
         elif choice == "6":
-            controller.save_notes_command()
-        elif choice == "7":
             break
         else:
             print("Неверный выбор.")

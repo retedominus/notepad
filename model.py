@@ -1,6 +1,5 @@
 import json
 import os.path
-import uuid
 from datetime import datetime
 
 
@@ -17,7 +16,7 @@ class Note:
             'id': self.note_id,
             'title': self.title,
             'content': self.content,
-            'time_stamp': self.time_stamp
+            'time_stamp': str(self.time_stamp)
         }
 
 
@@ -31,8 +30,13 @@ def get_next_id():
         data = json.loads(data)
         notes = data.get('notes', [])
         if notes:
-            last_note_id = notes[-1]['id']
-            return int(last_note_id) + 1
+            note_ids = set()
+            for note in notes:
+                note_ids.add(note['id'])
+            next_id = max(note_ids) + 1
+            return next_id
+            # last_note_id = notes[-1]['id']
+            # return int(last_note_id) + 1
         else:
             return 0
 
@@ -54,7 +58,7 @@ def read_notes():
 
     notes = []
     for note_data in data['notes']:
-        time_stamp = datetime.strftime(note_data['time_stamp'], '%Y-%m-%d %H:%M:%S')
+        time_stamp = datetime.strptime(note_data['time_stamp'], '%Y-%m-%d %H:%M:%S.%f')
         notes.append(Note(int(note_data['id']), note_data['title'], note_data['content'], time_stamp))
 
     return notes

@@ -10,12 +10,12 @@ def get_note_data():
 
 def display_notes(notes):
     if not notes:
-        print("Список заметок пуст.")
+        print("\nСписок заметок пуст.\n")
         return
-    print("Список заметок: ")
+    print("\nСписок заметок: ")
     for note in notes:
         print(f"ID заметки: {note.note_id}\n{note.title} (Создана (изменена): "
-              f"{note.time_stamp.strftime('%Y-%m-%d %H:%M:%S')})\n{note.content}")
+              f"{note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')})\n{note.content}")
     print()
 
 
@@ -37,14 +37,14 @@ def display_filtered_notes(notes, filter_date):
     else:
         print(f"Список заметок за {filter_date.strftime('%d.%m.%Y')}:")
         for note in filtered_notes:
-            print(f"{note.title} ({note.time_stamp.strftime('%Y-%m-%d %H:%M:%S')})")
+            print(f"{note.title} ({note.time_stamp.strftime('%d-%m-%Y %H:%M:%S')})")
     print()
 
 
 def get_note_id():
     note_id_str = input("Введите ID заметки: ")
     try:
-        note_id = uuid.UUID(note_id_str)
+        note_id = int(note_id_str)
     except ValueError:
         print("Некорректный формат ID. Попробуйте снова.")
         return get_note_id()
